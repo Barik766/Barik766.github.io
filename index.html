@@ -3,63 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Yehor Obraztsov — Full-Stack .NET Developer. C#, ASP.NET Core, Azure, Angular/React. 3+ years building backend systems and shipping features end-to-end.">
+    <meta name="description" content="Yehor Obraztsov — full-stack developer. Websites, Telegram bots, automation and AI tools. Ready-made software and custom services.">
     <meta name="theme-color" content="#0a0a0a">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Yehor Obraztsov — Full-Stack .NET Developer">
-    <meta property="og:description" content="3+ years building backend systems (C#, ASP.NET Core) and shipping end-to-end features on Azure.">
-    <title>Yehor Obraztsov — Full-Stack .NET Developer</title>
+    <meta property="og:title" content="Yehor Obraztsov — hub">
+    <meta property="og:description" content="Websites · bots · automation · AI. One link to everything — software and services.">
+    <title>Yehor Obraztsov — hub</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
         :root {
             --bg: #0a0a0a;
-            --bg-soft: #101010;
             --panel: #141414;
-            --panel-2: #1a1a1a;
+            --panel-2: #171717;
             --yellow: #ffe600;
             --gold: #ffb800;
-            --line: rgba(255, 230, 0, 0.22);
+            --line: rgba(255, 230, 0, 0.20);
             --text: #ececec;
             --muted: #8c8c8c;
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'JetBrains Mono', monospace;
             background: var(--bg);
             color: var(--text);
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        ::selection {
-            background: var(--yellow);
-            color: #000;
+        ::selection { background: var(--yellow); color: #000; }
+        a { color: var(--yellow); }
+
+        .matrix-bg {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            z-index: -1;
         }
 
+        /* ---------- boot (404 intro) ---------- */
         .error-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            inset: 0;
+            background: var(--bg);
+            z-index: 1000;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
-            background: var(--bg);
+            transition: opacity 0.5s ease;
         }
-
+        .error-screen.hide { opacity: 0; pointer-events: none; }
         .error-code {
             font-size: 8rem;
             font-weight: 700;
@@ -67,75 +66,79 @@
             text-shadow: 0 0 25px rgba(255, 230, 0, 0.6);
             animation: glitch 0.5s infinite;
         }
-
         .error-message {
-            font-size: 1.4rem;
-            margin-top: 20px;
+            font-size: 1.3rem;
+            margin-top: 18px;
             color: var(--muted);
-            animation: typewriter 1.2s steps(30) 0.3s forwards;
-            width: 0;
             overflow: hidden;
             white-space: nowrap;
+            width: 0;
+            animation: typewriter 1.2s steps(30) 0.3s forwards;
         }
-
         .loading-bar {
-            width: 300px;
+            width: 280px;
             height: 4px;
             background: #1a1a1a;
-            margin-top: 30px;
+            margin-top: 28px;
             border-radius: 2px;
             overflow: hidden;
         }
-
         .loading-progress {
             height: 100%;
-            background: linear-gradient(90deg, var(--gold), var(--yellow));
             width: 0;
+            background: linear-gradient(90deg, var(--gold), var(--yellow));
             animation: loadProgress 2s ease-in-out 0.4s forwards;
         }
 
-        .cv-container {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.9s ease;
-            background:
-                radial-gradient(1100px 520px at 50% -8%, rgba(255, 230, 0, 0.07), transparent 70%),
-                var(--bg);
-            min-height: 100vh;
-        }
-
-        .cv-container.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .matrix-bg {
+        /* ---------- lang toggle ---------- */
+        .topbar {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.06;
-            z-index: -1;
-        }
-
-        .header {
-            padding: 60px 20px 30px;
-            text-align: center;
-            position: relative;
+            top: 16px;
+            right: 16px;
+            display: flex;
+            border: 1px solid var(--line);
+            border-radius: 8px;
             overflow: hidden;
+            z-index: 20;
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(4px);
         }
-
-        .hack-message {
-            font-size: 1rem;
-            letter-spacing: 1px;
-            color: var(--gold);
-            animation: blink 1.6s infinite;
-            margin-bottom: 22px;
+        .lang {
+            padding: 6px 12px;
+            background: transparent;
+            color: var(--muted);
+            border: none;
+            font-family: inherit;
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: all 0.2s;
         }
+        .lang:hover { color: var(--text); }
+        .lang.active { background: var(--yellow); color: #0a0a0a; font-weight: 700; }
 
-        .name-title {
-            font-size: 3.2rem;
+        /* ---------- app / hero ---------- */
+        .app {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .app.show { opacity: 1; transform: translateY(0); }
+
+        .wrap { max-width: 640px; margin: 0 auto; padding: 0 20px 70px; }
+
+        .hero { text-align: center; padding: 64px 20px 10px; }
+        .glyph {
+            display: inline-block;
+            font-size: 1.4rem;
+            color: var(--yellow);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 4px 12px;
+            margin-bottom: 18px;
+            animation: blink 1.8s infinite;
+        }
+        .name {
+            font-size: 2.4rem;
             font-weight: 700;
             letter-spacing: 2px;
             background: linear-gradient(45deg, var(--yellow), var(--gold), var(--yellow));
@@ -143,891 +146,645 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: gradientShift 4s ease-in-out infinite;
-            margin-bottom: 12px;
+            animation: gradientShift 5s ease-in-out infinite;
         }
+        .tagline { color: var(--muted); font-size: 0.9rem; margin-top: 10px; letter-spacing: 0.5px; }
 
-        .role {
-            font-size: 1.4rem;
-            color: var(--text);
-        }
-
-        .role-sub {
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: var(--muted);
-            letter-spacing: 0.5px;
-        }
-
-        .nav-container {
+        /* ---------- tabs ---------- */
+        .tabs {
             display: flex;
             justify-content: center;
-            margin: 34px 0;
+            gap: 10px;
             flex-wrap: wrap;
-            gap: 14px;
+            margin: 26px 0 8px;
         }
-
-        .nav-btn {
-            padding: 12px 24px;
-            background: rgba(255, 230, 0, 0.06);
+        .tab-btn {
+            padding: 9px 18px;
+            background: rgba(255, 230, 0, 0.05);
             border: 1px solid var(--line);
+            border-radius: 8px;
             color: var(--yellow);
-            cursor: pointer;
             font-family: inherit;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-            transition: all 0.25s ease;
-            position: relative;
-            overflow: hidden;
+            font-size: 0.82rem;
+            text-decoration: none;
+            transition: all 0.2s;
         }
+        .tab-btn:hover { background: rgba(255, 230, 0, 0.12); transform: translateY(-2px); }
+        .tab-btn.active { background: var(--yellow); color: #0a0a0a; font-weight: 700; }
 
-        .nav-btn:hover,
-        .nav-btn.active {
-            background: var(--yellow);
-            color: #0a0a0a;
-            box-shadow: 0 0 22px rgba(255, 230, 0, 0.35);
-            transform: translateY(-2px);
-        }
+        .tab { display: none; }
+        .tab.active { display: block; animation: fadeInUp 0.5s ease; }
 
-        .nav-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-            transition: left 0.5s;
-        }
-
-        .nav-btn:hover::before {
-            left: 100%;
-        }
-
-        .content-section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            display: none;
-            animation: fadeInUp 0.6s ease forwards;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        .terminal {
-            background: var(--panel);
-            border: 1px solid var(--line);
-            border-radius: 10px;
-            margin: 20px 0;
-            overflow: hidden;
-            box-shadow: 0 0 30px rgba(255, 230, 0, 0.08);
-        }
-
-        .terminal-header {
-            background: #1c1c1c;
-            padding: 10px 15px;
+        /* ---------- section caption ---------- */
+        .cap {
+            color: var(--muted);
+            font-size: 0.78rem;
+            letter-spacing: 2px;
+            margin: 28px 2px 12px;
             display: flex;
             align-items: center;
             gap: 8px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
+        .cap::before { content: '//'; color: var(--yellow); opacity: 0.7; }
 
-        .terminal-btn {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .btn-close { background: #4d4d4d; }
-        .btn-min { background: #6e6e6e; }
-        .btn-max { background: var(--yellow); }
-
-        .terminal-title {
-            margin-left: 12px;
-            font-size: 0.85rem;
-            color: var(--muted);
-        }
-
-        .terminal-content {
-            padding: 22px;
-            font-size: 0.9rem;
-            line-height: 1.7;
+        .about {
             color: #cfcfcf;
+            line-height: 1.7;
+            font-size: 0.95rem;
+            margin: 22px 2px 8px;
         }
+        .note { color: var(--muted); font-size: 0.8rem; line-height: 1.6; margin: 14px 2px 0; }
 
-        .tag-info {
-            color: var(--yellow);
-            font-weight: 700;
-        }
-
-        .stats-grid {
+        /* ---------- link rows ---------- */
+        .link-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 18px;
-            margin: 30px 0;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
         }
-
-        .stat-card {
-            background: rgba(255, 230, 0, 0.04);
-            border: 1px solid var(--line);
-            padding: 25px;
-            border-radius: 10px;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(255, 230, 0, 0.12);
-            border-color: var(--yellow);
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--yellow);
-            display: block;
-            margin-bottom: 8px;
-            animation: countUp 1.2s ease-out;
-        }
-
-        .stat-label {
-            color: var(--muted);
-            font-size: 0.85rem;
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 22px;
-            margin: 30px 0;
-        }
-
-        .project-card {
+        .row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
             background: var(--panel-2);
             border: 1px solid var(--line);
-            border-radius: 12px;
-            padding: 26px;
-            transition: all 0.3s ease;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.2s;
             position: relative;
             overflow: hidden;
         }
-
-        .project-card::before {
+        .row::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 3px;
-            height: 100%;
+            left: 0; top: 0;
+            width: 2px; height: 100%;
+            background: var(--yellow);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .row:hover { border-color: var(--yellow); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255, 230, 0, 0.10); }
+        .row:hover::before { opacity: 0.85; }
+        .row-ic { width: 22px; height: 22px; flex: 0 0 22px; color: var(--yellow); }
+        .row-txt { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+        .row-label { color: var(--text); font-weight: 700; font-size: 0.92rem; }
+        .row-sub { color: var(--muted); font-size: 0.78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .row-chev { margin-left: auto; color: var(--muted); flex: 0 0 auto; display: flex; transition: transform 0.2s, color 0.2s; }
+        .row:hover .row-chev { color: var(--yellow); transform: translateX(3px); }
+
+        /* ---------- featured card ---------- */
+        .feat {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(255, 230, 0, 0.08), rgba(255, 230, 0, 0.015));
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .feat:hover { border-color: var(--yellow); box-shadow: 0 10px 30px rgba(255, 230, 0, 0.12); transform: translateY(-2px); }
+        .feat-ic { color: var(--yellow); display: flex; flex: 0 0 auto; }
+        .feat-txt { flex: 1; }
+        .feat-title { display: block; color: var(--yellow); font-weight: 700; font-size: 1.1rem; }
+        .feat-sub { display: block; color: var(--muted); font-size: 0.82rem; margin-top: 3px; }
+
+        /* ---------- products / services ---------- */
+        .products { display: flex; flex-direction: column; gap: 16px; }
+        .feats { display: flex; flex-direction: column; gap: 12px; }
+        .price-line { margin-top: 14px; font-weight: 700; color: var(--text); }
+        .price-from, .price-per { color: var(--muted); font-weight: 400; font-size: 0.82rem; }
+        .price-val { color: var(--yellow); font-size: 1.2rem; margin: 0 2px; }
+        .product {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: var(--panel-2);
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .product::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0;
+            width: 3px; height: 100%;
             background: var(--yellow);
             opacity: 0.7;
         }
-
-        .project-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--yellow);
-            box-shadow: 0 15px 40px rgba(255, 230, 0, 0.12);
-        }
-
-        .project-title {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: var(--yellow);
-            margin-bottom: 6px;
-            letter-spacing: 0.5px;
-        }
-
-        .project-year {
+        .product-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+        .product-title { color: var(--yellow); font-size: 1.3rem; font-weight: 700; }
+        .product-tag { color: var(--muted); font-size: 0.85rem; }
+        .badge {
+            font-size: 0.66rem;
+            padding: 4px 10px;
+            border: 1px solid var(--line);
+            border-radius: 20px;
             color: var(--gold);
-            font-size: 0.82rem;
+            text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 16px;
+            white-space: nowrap;
         }
-
-        .project-description {
-            color: #bdbdbd;
-            line-height: 1.6;
-            margin-bottom: 18px;
-        }
-
-        .project-bullets {
-            list-style: none;
-            margin: 0 0 18px;
-            padding: 0;
-        }
-
-        .project-bullets li {
-            position: relative;
-            padding-left: 20px;
-            margin-bottom: 10px;
-            color: #c4c4c4;
-            line-height: 1.6;
-            font-size: 0.9rem;
-        }
-
-        .project-bullets li::before {
-            content: '▸';
-            position: absolute;
-            left: 0;
-            color: var(--yellow);
-        }
-
-        .tech-tags {
-            display: flex;
-            flex-wrap: wrap;
+        .product-desc { color: #bdbdbd; line-height: 1.6; margin: 14px 0; font-size: 0.92rem; }
+        .bullets { list-style: none; margin: 14px 0; }
+        .bullets li { padding-left: 20px; position: relative; margin-bottom: 8px; color: #c4c4c4; font-size: 0.88rem; line-height: 1.55; }
+        .bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--yellow); }
+        .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+        .btn {
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.82rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
             gap: 8px;
         }
+        .btn-primary { background: var(--yellow); color: #0a0a0a; font-weight: 700; }
+        .btn-primary:hover { box-shadow: 0 0 22px rgba(255, 230, 0, 0.35); transform: translateY(-2px); }
+        .btn-ghost { background: transparent; color: var(--yellow); border: 1px solid var(--yellow); }
+        .btn-ghost:hover { background: rgba(255, 230, 0, 0.1); transform: translateY(-2px); }
 
+        /* ---------- stack ---------- */
+        .cat { margin-bottom: 22px; }
+        .cat h3 { color: var(--yellow); font-size: 0.95rem; letter-spacing: 1px; margin-bottom: 12px; }
+        .tech-tags { display: flex; flex-wrap: wrap; gap: 8px; }
         .tech-tag {
-            background: rgba(255, 230, 0, 0.1);
+            background: rgba(255, 230, 0, 0.08);
             color: var(--yellow);
-            padding: 4px 12px;
+            padding: 5px 12px;
             border-radius: 6px;
             font-size: 0.78rem;
-            border: 1px solid rgba(255, 230, 0, 0.25);
+            border: 1px solid rgba(255, 230, 0, 0.22);
         }
 
-        .project-link {
-            display: inline-block;
-            margin-top: 16px;
-            padding: 8px 16px;
-            background: rgba(255, 230, 0, 0.08);
-            border: 1px solid var(--yellow);
-            color: var(--yellow);
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 0.82rem;
-            transition: all 0.25s ease;
-        }
+        /* ---------- footer ---------- */
+        .foot { text-align: center; margin-top: 40px; }
+        .foot a { color: var(--muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+        .foot a:hover { color: var(--yellow); }
+        .foot-note { color: var(--muted); opacity: 0.6; font-size: 0.75rem; margin-top: 10px; letter-spacing: 1px; }
 
-        .project-link:hover {
-            background: var(--yellow);
-            color: #0a0a0a;
-            transform: translateX(5px);
-        }
+        /* ---------- animations ---------- */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        @keyframes gradientShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+        @keyframes glitch { 0%, 100% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(-2px, -2px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(2px, -2px); } }
+        @keyframes typewriter { from { width: 0; } to { width: 100%; } }
+        @keyframes loadProgress { from { width: 0; } to { width: 100%; } }
 
-        .skills-matrix {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-
-        .skill-category {
-            background: var(--panel-2);
-            border: 1px solid var(--line);
-            border-radius: 10px;
-            padding: 22px;
-        }
-
-        .skill-category h3 {
-            color: var(--yellow);
-            margin-bottom: 16px;
-            font-size: 1.05rem;
-            letter-spacing: 1px;
-        }
-
-        .contact-terminal {
-            background: #000;
-            border: 1px solid var(--line);
-            border-radius: 10px;
-            padding: 24px;
-            margin: 30px 0;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        .contact-line {
-            margin-bottom: 14px;
-            opacity: 0;
-            animation: fadeInUp 0.5s ease forwards;
-        }
-
-        .contact-link {
-            color: var(--yellow);
-            text-decoration: none;
-            transition: all 0.25s ease;
-        }
-
-        .contact-link:hover {
-            color: var(--gold);
-            text-shadow: 0 0 10px rgba(255, 230, 0, 0.5);
-        }
-
-        @keyframes glitch {
-            0%, 100% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-        }
-
-        @keyframes typewriter {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-
-        @keyframes loadProgress {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.35; }
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        @keyframes countUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        @media (max-width: 768px) {
-            .error-code { font-size: 4rem; }
-            .name-title { font-size: 2rem; }
-            .nav-container { flex-direction: column; align-items: center; }
-            .nav-btn { width: 100%; max-width: 320px; }
-            .projects-grid { grid-template-columns: 1fr; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        @media (max-width: 640px) {
+            .link-grid { grid-template-columns: 1fr; }
+            .name { font-size: 1.9rem; }
+            .boot { padding: 0 24px; font-size: 0.82rem; }
         }
     </style>
 </head>
 <body>
-    
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="ic-github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></symbol>
+        <symbol id="ic-linkedin" viewBox="0 0 24 24"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></symbol>
+        <symbol id="ic-tiktok" viewBox="0 0 24 24"><path fill="currentColor" d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></symbol>
+        <symbol id="ic-telegram" viewBox="0 0 24 24"><path fill="currentColor" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></symbol>
+    </svg>
+
     <canvas class="matrix-bg" id="matrix"></canvas>
-    
-    <div class="error-screen" id="errorScreen">
+
+    <div class="error-screen" id="boot">
         <div class="error-code">404</div>
-        <div class="error-message">ERROR: Developer Not Found...</div>
-        <div class="loading-bar">
-            <div class="loading-progress"></div>
-        </div>
+        <div class="error-message">ERROR: DEVELOPER NOT FOUND...</div>
+        <div class="loading-bar"><div class="loading-progress"></div></div>
     </div>
 
-    <div class="cv-container" id="cvContainer">
-        <div class="header">
-            <div class="hack-message">>>> ACCESS GRANTED — DEVELOPER LOCATED <<<</div>
-            <h1 class="name-title">YEHOR OBRAZTSOV</h1>
-            <p class="role">Full-Stack .NET Developer</p>
-            <p class="role-sub">C# · ASP.NET Core · Azure · Angular / React</p>
-        </div>
+    <div class="topbar">
+        <button class="lang" data-lang="en">EN</button>
+        <button class="lang" data-lang="uk">UA</button>
+    </div>
 
-        <div class="nav-container">
-            <button class="nav-btn active" onclick="showSection('overview', this)">SYSTEM_INFO</button>
-            <button class="nav-btn" onclick="showSection('experience', this)">EXPERIENCE.LOG</button>
-            <button class="nav-btn" onclick="showSection('skills', this)">SKILLS_MATRIX</button>
-            <button class="nav-btn" onclick="showSection('contact', this)">CONNECT.BAT</button>
-        </div>
+    <div class="app" id="app">
+        <header class="hero">
+            <div class="glyph">&gt;_</div>
+            <h1 class="name">YEHOR OBRAZTSOV</h1>
+            <p class="tagline" data-i18n="tagline">websites · bots · automation · AI</p>
+        </header>
 
-        <div class="content-section active" id="overview">
-            <div class="terminal">
-                <div class="terminal-header">
-                    <div class="terminal-btn btn-close"></div>
-                    <div class="terminal-btn btn-min"></div>
-                    <div class="terminal-btn btn-max"></div>
-                    <div class="terminal-title">system_info.log</div>
-                </div>
-                <div class="terminal-content">
-                    <p>> Initializing developer profile...</p>
-                    <p>> Loading experience data...</p>
-                    <p>> Status: <span class="tag-info">ONLINE</span></p>
-                    <br>
-                    <p><span class="tag-info">[INFO]</span> Full-Stack .NET developer with 3+ years of experience</p>
-                    <p><span class="tag-info">[INFO]</span> Backend systems (C#, ASP.NET Core) + end-to-end delivery: UI (Angular/React) &#8594; CI/CD &amp; monitoring on Azure</p>
-                    <p><span class="tag-info">[INFO]</span> Direct stakeholder communication across Europe and the US</p>
-                    <p><span class="tag-info">[INFO]</span> Location: Lublin, Poland (open to relocate)</p>
-                    <br>
-                    <p>> Education: University College of Enterprise and Administration, Lublin (2023–2026)</p>
-                    <p>> BSc in Computer Science · GPA 4.7/5.0</p>
-                    <p>> Thesis: Vulnerabilities in Web Applications and Mitigation Strategies</p>
-                    <p>> Languages: English (C1), Polish (C1), Ukrainian (Native), Russian (Native)</p>
-                </div>
-            </div>
+        <nav class="tabs">
+            <a class="tab-btn active" data-tab="home" href="#home">~/home</a>
+            <a class="tab-btn" data-tab="soft" href="#soft">~/soft</a>
+            <a class="tab-btn" data-tab="services" href="#services">~/services</a>
+            <a class="tab-btn" data-tab="stack" href="#stack">~/stack</a>
+        </nav>
 
-            <div class="stats-grid">
-                <div class="stat-card" onclick="animateCard(this)">
-                    <span class="stat-number">3+</span>
-                    <span class="stat-label">Years Experience</span>
-                </div>
-                <div class="stat-card" onclick="animateCard(this)">
-                    <span class="stat-number">1M+</span>
-                    <span class="stat-label">Load Handled</span>
-                </div>
-                <div class="stat-card" onclick="animateCard(this)">
-                    <span class="stat-number">50+</span>
-                    <span class="stat-label">CI/CD Pipelines Hardened</span>
-                </div>
-                <div class="stat-card" onclick="animateCard(this)">
-                    <span class="stat-number">4.7</span>
-                    <span class="stat-label">GPA / 5.0</span>
-                </div>
-            </div>
-        </div>
+        <main class="wrap">
+            <!-- ============ HOME ============ -->
+            <section id="tab-home" class="tab active">
+                <p class="about" data-i18n="about">I'm Yehor — a full-stack developer. I build websites, Telegram bots, automations and AI tools (LLM · RAG · MCP), and ship them end-to-end. I also make dev content.</p>
 
-        <div class="content-section" id="experience">
-            <div class="terminal">
-                <div class="terminal-header">
-                    <div class="terminal-btn btn-close"></div>
-                    <div class="terminal-btn btn-min"></div>
-                    <div class="terminal-btn btn-max"></div>
-                    <div class="terminal-title">experience.log --all</div>
-                </div>
-                <div class="terminal-content">
-                    <p>> Fetching work history...</p>
-                    <p>> 3 roles + open-source contributions</p>
-                    <p>> Rendering timeline...</p>
-                </div>
-            </div>
-
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-title">SOFTWARE ENGINEER &middot; AKVELON, INC.</div>
-                    <div class="project-year">JAN 2026 &mdash; PRESENT</div>
-                    <ul class="project-bullets">
-                        <li>Migrated 12 mission-critical Microsoft platform services across Azure regions with near-zero downtime &mdash; full risk assessment, trade-off analysis and migration planning.</li>
-                        <li>Built an MCP-based AI agent for automated PR review &mdash; validates business logic, detects breaking changes and surfaces regressions to speed up feedback cycles.</li>
-                        <li>Hardened 50+ CI/CD pipelines on a large-scale Microsoft enterprise platform; migrated to modern, audited Azure DevOps tooling; monitored health via Grafana &amp; Prometheus.</li>
-                    </ul>
-                    <div class="tech-tags">
-                        <span class="tech-tag">Azure</span>
-                        <span class="tech-tag">MCP / AI Agents</span>
-                        <span class="tech-tag">Azure DevOps</span>
-                        <span class="tech-tag">Grafana</span>
-                        <span class="tech-tag">Prometheus</span>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-title">FULL-STACK .NET DEVELOPER &middot; BOOTSIK</div>
-                    <div class="project-year">NOV 2023 &mdash; JAN 2026</div>
-                    <ul class="project-bullets">
-                        <li>Worked in a distributed team (2 devs + TL) serving US stakeholders, owning backend architecture and cloud infra. Migrated a SPOF service to geo-distributed cloud, eliminating global failures.</li>
-                        <li>Fixed DB deadlocks handling 50 concurrent webhooks (20K each) &mdash; stable under 1M+ load.</li>
-                        <li>Reduced report load time from 15+ seconds to under 2 by optimizing SQL queries, adding indexes and rewriting stored procedures.</li>
-                    </ul>
-                    <div class="tech-tags">
-                        <span class="tech-tag">C#</span>
-                        <span class="tech-tag">ASP.NET Core</span>
-                        <span class="tech-tag">PostgreSQL</span>
-                        <span class="tech-tag">Cloud</span>
-                        <span class="tech-tag">SQL Optimization</span>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-title">FREELANCE FULL-STACK DEVELOPER &middot; SELF-EMPLOYED</div>
-                    <div class="project-year">MAY 2023 &mdash; OCT 2023</div>
-                    <ul class="project-bullets">
-                        <li>AI Dedup: multilingual matching (sentence-transformers + pgvector, 50+ languages, p99 ~1&ndash;2ms), perceptual hashing for visual duplicates (Hamming distance) and a vision-LLM fallback for text-in-images. Two-stage lookup keeps comparisons in &micro;s.</li>
-                        <li>Travel CMS: admin CMS with dynamic landing pages and a visual editor (fonts/colors/images); managed 100+ trips/month. Deployed to Azure with GitHub Actions CI/CD.</li>
-                    </ul>
-                    <div class="tech-tags">
-                        <span class="tech-tag">sentence-transformers</span>
-                        <span class="tech-tag">pgvector</span>
-                        <span class="tech-tag">Perceptual Hashing</span>
-                        <span class="tech-tag">LLM</span>
-                        <span class="tech-tag">Azure</span>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-title">OPEN SOURCE &middot; microsoft/azure-pipelines-tasks</div>
-                    <div class="project-year">CONTRIBUTOR</div>
-                    <ul class="project-bullets">
-                        <li>Migrated the AppCenterDistributeV3 task to the Node.js 24 runtime; resolved network API breaking changes and fixed a CI version-map validation bug.</li>
-                    </ul>
-                    <div class="tech-tags">
-                        <span class="tech-tag">Open Source</span>
-                        <span class="tech-tag">Node.js 24</span>
-                        <span class="tech-tag">TypeScript</span>
-                        <span class="tech-tag">Microsoft</span>
-                    </div>
-                    <a href="https://github.com/microsoft/azure-pipelines-tasks"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="project-link">
-                        ► VIEW ON GITHUB
+                <p class="cap" data-i18n="cap_links">links</p>
+                <div class="link-grid">
+                    <a class="row" href="https://www.tiktok.com/@barik7667" target="_blank" rel="noopener noreferrer">
+                        <svg class="row-ic"><use href="#ic-tiktok"/></svg>
+                        <span class="row-txt"><span class="row-label">TikTok</span><span class="row-sub" data-i18n="tiktok_sub">dev content · EN</span></span>
+                        <span class="row-chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+                    </a>
+                    <a class="row" href="https://www.threads.com/@e_gor4ik_" target="_blank" rel="noopener noreferrer">
+                        <img class="row-ic" src="https://cdn.simpleicons.org/threads/ffe600" alt="">
+                        <span class="row-txt"><span class="row-label">Threads</span><span class="row-sub" data-i18n="threads_sub">thoughts · UA</span></span>
+                        <span class="row-chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+                    </a>
+                    <a class="row" href="https://linkedin.com/in/eobraztsov" target="_blank" rel="noopener noreferrer">
+                        <svg class="row-ic"><use href="#ic-linkedin"/></svg>
+                        <span class="row-txt"><span class="row-label">LinkedIn</span><span class="row-sub" data-i18n="linkedin_sub">/in/eobraztsov</span></span>
+                        <span class="row-chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+                    </a>
+                    <a class="row" href="https://github.com/Barik766" target="_blank" rel="noopener noreferrer">
+                        <svg class="row-ic"><use href="#ic-github"/></svg>
+                        <span class="row-txt"><span class="row-label">GitHub</span><span class="row-sub" data-i18n="github_sub">/Barik766</span></span>
+                        <span class="row-chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
                     </a>
                 </div>
-            </div>
-        </div>
 
-        <div class="content-section" id="skills">
-            <div class="terminal">
-                <div class="terminal-header">
-                    <div class="terminal-btn btn-close"></div>
-                    <div class="terminal-btn btn-min"></div>
-                    <div class="terminal-btn btn-max"></div>
-                    <div class="terminal-title">skills_matrix.dll</div>
+                <p class="cap" data-i18n="cap_featured">featured</p>
+                <div class="feats">
+                    <a class="feat" href="#soft">
+                        <span class="feat-ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg></span>
+                        <span class="feat-txt"><span class="feat-title" data-i18n="feat_soft_title">Ready-made software</span><span class="feat-sub" data-i18n="feat_soft_sub">AI tools, ready to use — from $20/mo</span></span>
+                        <span class="row-chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+                    </a>
+                    <a class="feat" href="#services">
+                        <span class="feat-ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span>
+                        <span class="feat-txt"><span class="feat-title" data-i18n="feat_svc_title">Services / hire me</span><span class="feat-sub" data-i18n="feat_svc_sub">Landing, bots, web apps — from $100</span></span>
+                        <span class="row-chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+                    </a>
                 </div>
-                <div class="terminal-content">
-                    <p>> Loading skill assessment data...</p>
-                    <p>> Analyzing proficiency levels...</p>
-                    <p>> Matrix compilation complete</p>
-                </div>
-            </div>
 
-            <div class="skills-matrix">
-                <div class="skill-category">
-                    <h3>BACKEND</h3>
-                    <div class="tech-tags">
-                        <span class="tech-tag">C#</span>
-                        <span class="tech-tag">.NET</span>
-                        <span class="tech-tag">ASP.NET Core</span>
-                        <span class="tech-tag">Web API</span>
-                        <span class="tech-tag">MVC</span>
-                        <span class="tech-tag">Microservices</span>
-                        <span class="tech-tag">RabbitMQ</span>
-                        <span class="tech-tag">Hangfire</span>
-                        <span class="tech-tag">REST API</span>
+                <p class="cap" data-i18n="cap_contact">contact</p>
+                <div class="link-grid">
+                    <a class="row" href="mailto:yehor.obraztsov@gmail.com">
+                        <span class="row-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+                        <span class="row-txt"><span class="row-label">Email</span><span class="row-sub" data-i18n="email_sub">work / collabs</span></span>
+                        <span class="row-chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+                    </a>
+                    <a class="row" href="https://t.me/egor_ne_igor" target="_blank" rel="noopener noreferrer">
+                        <svg class="row-ic"><use href="#ic-telegram"/></svg>
+                        <span class="row-txt"><span class="row-label">Telegram</span><span class="row-sub" data-i18n="tg_sub">DM for work</span></span>
+                        <span class="row-chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+                    </a>
+                </div>
+                <p class="note" data-i18n="contact_note">I reply fast — email or DM, whatever works for you.</p>
+            </section>
+
+            <!-- ============ SOFT ============ -->
+            <section id="tab-soft" class="tab">
+                <p class="about" data-i18n="soft_intro">Ready-made products you can use today. More coming.</p>
+
+                <p class="cap" data-i18n="cap_software">software</p>
+                <div class="products">
+                    <div class="product">
+                        <div class="product-head">
+                            <div><span class="product-title">Dedup</span> &nbsp;<span class="product-tag" data-i18n="dedup_tag">AI editor for Telegram channels</span></div>
+                            <span class="badge" data-i18n="dedup_status">available</span>
+                        </div>
+                        <p class="product-desc" data-i18n="dedup_desc">Turns a messy channel inbox into clean, ready-to-publish posts. It removes duplicates, spam and unverified news automatically.</p>
+                        <ul class="bullets">
+                            <li data-i18n="dedup_b1">Text deduplication — understands meaning, 50+ languages</li>
+                            <li data-i18n="dedup_b2">Image &amp; video deduplication</li>
+                            <li data-i18n="dedup_b3">AI fact-checking with sources</li>
+                            <li data-i18n="dedup_b4">Clean, ready-to-publish posts</li>
+                        </ul>
+                        <div class="price-line"><span class="price-from" data-i18n="from">from</span> <span class="price-val">$20</span><span class="price-per" data-i18n="per_mo">/mo</span></div>
+                        <div class="actions">
+                            <a class="btn btn-primary" href="https://deduptelegrambot.pages.dev/" target="_blank" rel="noopener noreferrer" data-i18n="cta_learn">Learn more</a>
+                            <a class="btn btn-ghost" href="https://t.me/dedup_news_bot" target="_blank" rel="noopener noreferrer" data-i18n="cta_bot">Open in Telegram</a>
+                        </div>
                     </div>
                 </div>
+                <p class="note" data-i18n="more_soon">more products coming</p>
+            </section>
 
-                <div class="skill-category">
-                    <h3>FRONTEND</h3>
-                    <div class="tech-tags">
-                        <span class="tech-tag">Angular</span>
-                        <span class="tech-tag">React</span>
-                        <span class="tech-tag">TypeScript</span>
-                        <span class="tech-tag">RxJS</span>
-                        <span class="tech-tag">JavaScript</span>
-                        <span class="tech-tag">HTML5</span>
-                        <span class="tech-tag">CSS3</span>
-                        <span class="tech-tag">SCSS</span>
-                        <span class="tech-tag">Bootstrap</span>
+            <!-- ============ SERVICES ============ -->
+            <section id="tab-services" class="tab">
+                <p class="about" data-i18n="svc_intro">Custom work — from idea to launch. Websites, bots, automation.</p>
+
+                <p class="cap" data-i18n="cap_services">services</p>
+                <div class="products">
+                    <div class="product">
+                        <div class="product-head">
+                            <div><span class="product-title" data-i18n="svc_land_title">Landing page</span></div>
+                            <span class="badge"><span data-i18n="from">from</span> $100</span>
+                        </div>
+                        <p class="product-desc" data-i18n="svc_land_desc">A fast, responsive landing — designed, built and shipped for you.</p>
+                        <ul class="bullets">
+                            <li data-i18n="svc_land_b1">Design &amp; build</li>
+                            <li data-i18n="svc_land_b2">SEO optimization</li>
+                            <li data-i18n="svc_land_b3">Domain purchase &amp; setup</li>
+                            <li data-i18n="svc_land_b4">Deploy &amp; hosting</li>
+                        </ul>
+                        <div class="actions">
+                            <a class="btn btn-primary" href="mailto:yehor.obraztsov@gmail.com?subject=Landing" data-i18n="cta_order">Order</a>
+                        </div>
+                    </div>
+
+                    <div class="product">
+                        <div class="product-head">
+                            <div><span class="product-title" data-i18n="svc_bot_title">Telegram bot</span></div>
+                            <span class="badge"><span data-i18n="from">from</span> $100</span>
+                        </div>
+                        <p class="product-desc" data-i18n="svc_bot_desc">Custom bots, automations and integrations for your workflow.</p>
+                        <ul class="bullets">
+                            <li data-i18n="svc_bot_b1">Custom logic &amp; flows</li>
+                            <li data-i18n="svc_bot_b2">Payments / Telegram Stars</li>
+                            <li data-i18n="svc_bot_b3">Deploy &amp; hosting</li>
+                        </ul>
+                        <div class="actions">
+                            <a class="btn btn-primary" href="mailto:yehor.obraztsov@gmail.com?subject=Telegram%20bot" data-i18n="cta_order">Order</a>
+                        </div>
+                    </div>
+
+                    <div class="product">
+                        <div class="product-head">
+                            <div><span class="product-title" data-i18n="svc_web_title">Web apps</span></div>
+                            <span class="badge" data-i18n="svc_web_badge">custom</span>
+                        </div>
+                        <p class="product-desc" data-i18n="svc_web_desc">Full-stack web applications and automations, built to spec.</p>
+                        <ul class="bullets">
+                            <li data-i18n="svc_web_b1">Full-stack — front + back</li>
+                            <li data-i18n="svc_web_b2">APIs &amp; integrations</li>
+                            <li data-i18n="svc_web_b3">Automation &amp; AI features</li>
+                        </ul>
+                        <div class="actions">
+                            <a class="btn btn-primary" href="mailto:yehor.obraztsov@gmail.com?subject=Web%20app" data-i18n="cta_talk">Let's talk</a>
+                        </div>
                     </div>
                 </div>
+            </section>
 
-                <div class="skill-category">
-                    <h3>DATABASES</h3>
+            <!-- ============ STACK ============ -->
+            <section id="tab-stack" class="tab">
+                <p class="about" data-i18n="stack_intro">What I build with. Need something? → ~/services.</p>
+
+                <p class="cap" data-i18n="cap_stack">stack</p>
+                <div class="cat">
+                    <h3>Backend</h3>
                     <div class="tech-tags">
-                        <span class="tech-tag">PostgreSQL</span>
-                        <span class="tech-tag">MS SQL Server</span>
-                        <span class="tech-tag">EF Core</span>
-                        <span class="tech-tag">Dapper</span>
-                        <span class="tech-tag">LINQ</span>
-                        <span class="tech-tag">Redis</span>
+                        <span class="tech-tag">C#</span><span class="tech-tag">.NET</span><span class="tech-tag">ASP.NET Core</span><span class="tech-tag">Web API</span><span class="tech-tag">MVC</span><span class="tech-tag">Microservices</span><span class="tech-tag">RabbitMQ</span><span class="tech-tag">Hangfire</span><span class="tech-tag">REST API</span>
                     </div>
                 </div>
-
-                <div class="skill-category">
-                    <h3>DEVOPS &amp; TESTS</h3>
+                <div class="cat">
+                    <h3>Frontend</h3>
                     <div class="tech-tags">
-                        <span class="tech-tag">Azure</span>
-                        <span class="tech-tag">AWS</span>
-                        <span class="tech-tag">Docker</span>
-                        <span class="tech-tag">Git</span>
-                        <span class="tech-tag">CI/CD</span>
-                        <span class="tech-tag">Azure DevOps</span>
-                        <span class="tech-tag">GitLab CI</span>
-                        <span class="tech-tag">Grafana</span>
-                        <span class="tech-tag">Prometheus</span>
-                        <span class="tech-tag">xUnit</span>
-                        <span class="tech-tag">Playwright</span>
+                        <span class="tech-tag">Angular</span><span class="tech-tag">React</span><span class="tech-tag">TypeScript</span><span class="tech-tag">RxJS</span><span class="tech-tag">JavaScript</span><span class="tech-tag">HTML5</span><span class="tech-tag">CSS3</span><span class="tech-tag">SCSS</span><span class="tech-tag">Bootstrap</span>
                     </div>
                 </div>
-
-                <div class="skill-category">
-                    <h3>AI / AGENTS</h3>
+                <div class="cat">
+                    <h3>Databases</h3>
                     <div class="tech-tags">
-                        <span class="tech-tag">MCP</span>
-                        <span class="tech-tag">Vector Databases</span>
-                        <span class="tech-tag">Embeddings</span>
-                        <span class="tech-tag">Semantic Search</span>
-                        <span class="tech-tag">Perceptual Hashing</span>
-                        <span class="tech-tag">LLM Integration</span>
+                        <span class="tech-tag">PostgreSQL</span><span class="tech-tag">MS SQL Server</span><span class="tech-tag">EF Core</span><span class="tech-tag">Dapper</span><span class="tech-tag">LINQ</span><span class="tech-tag">Redis</span><span class="tech-tag">pgvector</span>
                     </div>
                 </div>
-
-                <div class="skill-category">
-                    <h3>ARCHITECTURE</h3>
+                <div class="cat">
+                    <h3>DevOps / Tests</h3>
                     <div class="tech-tags">
-                        <span class="tech-tag">OOP</span>
-                        <span class="tech-tag">SOLID</span>
-                        <span class="tech-tag">DRY</span>
-                        <span class="tech-tag">KISS</span>
-                        <span class="tech-tag">Design Patterns</span>
-                        <span class="tech-tag">Dependency Injection</span>
+                        <span class="tech-tag">Azure</span><span class="tech-tag">AWS</span><span class="tech-tag">Docker</span><span class="tech-tag">Git</span><span class="tech-tag">CI/CD</span><span class="tech-tag">Azure DevOps</span><span class="tech-tag">GitLab CI</span><span class="tech-tag">Grafana</span><span class="tech-tag">Prometheus</span><span class="tech-tag">xUnit</span><span class="tech-tag">Playwright</span>
                     </div>
                 </div>
-            </div>
-        </div>
+                <div class="cat">
+                    <h3>AI / Agents</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">MCP</span><span class="tech-tag">Vector Databases</span><span class="tech-tag">Embeddings</span><span class="tech-tag">Semantic Search</span><span class="tech-tag">Perceptual Hashing</span><span class="tech-tag">LLM Integration</span>
+                    </div>
+                </div>
+                <div class="cat">
+                    <h3>Python</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Python</span><span class="tech-tag">aiogram 3</span><span class="tech-tag">FastAPI</span>
+                    </div>
+                </div>
+                <div class="cat">
+                    <h3 data-i18n="cat_arch">Architecture</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">OOP</span><span class="tech-tag">SOLID</span><span class="tech-tag">DRY</span><span class="tech-tag">KISS</span><span class="tech-tag">Design Patterns</span><span class="tech-tag">DI</span>
+                    </div>
+                </div>
+                <div class="cat">
+                    <h3 data-i18n="cat_langs">Languages</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">English C1</span><span class="tech-tag">Polish C1</span><span class="tech-tag">Ukrainian</span><span class="tech-tag">Russian</span>
+                    </div>
+                </div>
+            </section>
 
-        <div class="content-section" id="contact">
-            <div class="terminal">
-                <div class="terminal-header">
-                    <div class="terminal-btn btn-close"></div>
-                    <div class="terminal-btn btn-min"></div>
-                    <div class="terminal-btn btn-max"></div>
-                    <div class="terminal-title">connect.bat</div>
-                </div>
-                <div class="terminal-content">
-                    <p>> Establishing secure connection...</p>
-                    <p>> Encryption: AES-256</p>
-                    <p>> Connection established successfully</p>
-                </div>
-            </div>
-
-            <div class="contact-terminal">
-                <div class="contact-line" style="animation-delay: 0.4s;">
-                    > Email: <a href="mailto:yehor.obraztsov@gmail.com" class="contact-link">yehor.obraztsov@gmail.com</a>
-                </div>
-                <div class="contact-line" style="animation-delay: 0.8s;">
-                    > Phone: <a href="tel:+48881641602" class="contact-link">+48 881 641 602</a>
-                </div>
-                <div class="contact-line" style="animation-delay: 1.2s;">
-                    > LinkedIn: <a href="https://linkedin.com/in/eobraztsov" class="contact-link" target="_blank" rel="noopener noreferrer">linkedin.com/in/eobraztsov</a>
-                </div>
-                <div class="contact-line" style="animation-delay: 1.6s;">
-                    > GitHub: <a href="https://github.com/Barik766" class="contact-link" target="_blank" rel="noopener noreferrer">github.com/Barik766</a>
-                </div>
-                <div class="contact-line" style="animation-delay: 2s;">
-                    > Location: Lublin, Poland (open to relocate)
-                </div>
-                <div class="contact-line" style="animation-delay: 2.4s;">
-                    > Status: <span class="tag-info">OPEN_TO_WORK</span>
-                </div>
-            </div>
-        </div>
+            <footer class="foot">
+                <p class="foot-note" data-i18n="footer_note">one link. everything I do.</p>
+            </footer>
+        </main>
     </div>
 
     <script>
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
+        /* ---------- i18n ---------- */
+        const I18N = {
+            en: {
+                tagline: "websites · bots · automation · AI",
+                about: "I'm Yehor — a full-stack developer. I build websites, Telegram bots, automations and AI tools (LLM · RAG · MCP), and ship them end-to-end. I also make dev content.",
+                cap_links: "links",
+                cap_featured: "featured",
+                cap_contact: "contact",
+                cap_software: "software",
+                cap_services: "services",
+                cap_stack: "stack",
+                tiktok_sub: "dev content · EN",
+                threads_sub: "thoughts · UA",
+                linkedin_sub: "/in/eobraztsov",
+                github_sub: "/Barik766",
+                feat_soft_title: "Ready-made software",
+                feat_soft_sub: "AI tools, ready to use — from $20/mo",
+                feat_svc_title: "Services / hire me",
+                feat_svc_sub: "Landing, bots, web apps — from $100",
+                email_sub: "work / collabs",
+                tg_sub: "DM for work",
+                contact_note: "I reply fast — email or DM, whatever works for you.",
+                soft_intro: "Ready-made products you can use today. More coming.",
+                dedup_tag: "AI editor for Telegram channels",
+                dedup_status: "available",
+                dedup_desc: "Turns a messy channel inbox into clean, ready-to-publish posts. It removes duplicates, spam and unverified news automatically.",
+                dedup_b1: "Text deduplication — understands meaning, 50+ languages",
+                dedup_b2: "Image & video deduplication",
+                dedup_b3: "AI fact-checking with sources",
+                dedup_b4: "Clean, ready-to-publish posts",
+                from: "from",
+                per_mo: "/mo",
+                cta_learn: "Learn more",
+                cta_bot: "Open in Telegram",
+                more_soon: "more products coming",
+                svc_intro: "Custom work — from idea to launch. Websites, bots, automation.",
+                svc_land_title: "Landing page",
+                svc_land_desc: "A fast, responsive landing — designed, built and shipped for you.",
+                svc_land_b1: "Design & build",
+                svc_land_b2: "SEO optimization",
+                svc_land_b3: "Domain purchase & setup",
+                svc_land_b4: "Deploy & hosting",
+                svc_bot_title: "Telegram bot",
+                svc_bot_desc: "Custom bots, automations and integrations for your workflow.",
+                svc_bot_b1: "Custom logic & flows",
+                svc_bot_b2: "Payments / Telegram Stars",
+                svc_bot_b3: "Deploy & hosting",
+                svc_web_title: "Web apps",
+                svc_web_badge: "custom",
+                svc_web_desc: "Full-stack web applications and automations, built to spec.",
+                svc_web_b1: "Full-stack — front + back",
+                svc_web_b2: "APIs & integrations",
+                svc_web_b3: "Automation & AI features",
+                cta_order: "Order",
+                cta_talk: "Let's talk",
+                stack_intro: "What I build with. Need something? → ~/services.",
+                cat_arch: "Architecture",
+                cat_langs: "Languages",
+                footer_note: "one link. everything I do."
+            },
+            uk: {
+                tagline: "сайти · боти · автоматизація · AI",
+                about: "Я Єгор — full-stack розробник. Роблю сайти, Telegram-ботів, автоматизації та AI-інструменти (LLM · RAG · MCP) і доводжу їх до готового продукту. А ще знімаю контент про розробку.",
+                cap_links: "лінки",
+                cap_featured: "рекомендую",
+                cap_contact: "контакти",
+                cap_software: "софт",
+                cap_services: "послуги",
+                cap_stack: "стек",
+                tiktok_sub: "контент про код · EN",
+                threads_sub: "думки · UA",
+                linkedin_sub: "/in/eobraztsov",
+                github_sub: "/Barik766",
+                feat_soft_title: "Готові продукти",
+                feat_soft_sub: "AI-інструменти, готові до роботи — від $20/міс",
+                feat_svc_title: "Послуги / найняти мене",
+                feat_svc_sub: "Лендинги, боти, веб-застосунки — від $100",
+                email_sub: "робота / колаби",
+                tg_sub: "особисто по роботі",
+                contact_note: "Відповідаю швидко — пошта чи особисті, як зручно.",
+                soft_intro: "Готові продукти, якими можна користуватись вже сьогодні. Скоро більше.",
+                dedup_tag: "AI-редактор Telegram-каналів",
+                dedup_status: "доступно",
+                dedup_desc: "Перетворює хаос у предложці каналу на чисті, готові до публікації пости. Автоматично прибирає дублікати, спам і неперевірені новини.",
+                dedup_b1: "Дедуп тексту — розуміє зміст, 50+ мов",
+                dedup_b2: "Дедуп зображень і відео",
+                dedup_b3: "AI-фактчек із джерелами",
+                dedup_b4: "Чисті, готові до публікації пости",
+                from: "від",
+                per_mo: "/міс",
+                cta_learn: "Детальніше",
+                cta_bot: "Відкрити в Telegram",
+                more_soon: "скоро більше продуктів",
+                svc_intro: "Робота під замовлення — від ідеї до запуску. Сайти, боти, автоматизація.",
+                svc_land_title: "Лендинг",
+                svc_land_desc: "Швидкий адаптивний лендинг — задизайню, зроблю і запущу під ключ.",
+                svc_land_b1: "Дизайн і верстка",
+                svc_land_b2: "SEO-оптимізація",
+                svc_land_b3: "Купівля і налаштування домену",
+                svc_land_b4: "Деплой і хостинг",
+                svc_bot_title: "Telegram-бот",
+                svc_bot_desc: "Кастомні боти, автоматизації та інтеграції під твої задачі.",
+                svc_bot_b1: "Кастомна логіка і сценарії",
+                svc_bot_b2: "Оплата / Telegram Stars",
+                svc_bot_b3: "Деплой і хостинг",
+                svc_web_title: "Веб-застосунки",
+                svc_web_badge: "під замовлення",
+                svc_web_desc: "Full-stack веб-застосунки та автоматизації під ваші задачі.",
+                svc_web_b1: "Full-stack — front + back",
+                svc_web_b2: "API та інтеграції",
+                svc_web_b3: "Автоматизація та AI",
+                cta_order: "Замовити",
+                cta_talk: "Обговорити",
+                stack_intro: "Чим я будую. Треба щось зробити? → ~/services.",
+                cat_arch: "Архітектура",
+                cat_langs: "Мови",
+                footer_note: "одне посилання. усе, що я роблю."
+            }
+        };
 
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
-        const fontSize = 10;
-        const columns = canvas.width / fontSize;
-        const drops = [];
-
-        for (let i = 0; i < columns; i++) {
-            drops[i] = 1;
+        function setLang(lang) {
+            if (!I18N[lang]) lang = 'en';
+            document.documentElement.lang = lang === 'uk' ? 'uk' : 'en';
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const k = el.getAttribute('data-i18n');
+                if (I18N[lang][k] !== undefined) el.textContent = I18N[lang][k];
+            });
+            document.querySelectorAll('.lang').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+            try { localStorage.setItem('hub_lang', lang); } catch (e) {}
         }
 
+        document.querySelectorAll('.lang').forEach(b => {
+            b.addEventListener('click', () => setLang(b.dataset.lang));
+        });
+
+        /* ---------- tabs ---------- */
+        function openTab(name) {
+            const valid = ['home', 'soft', 'services', 'stack'];
+            if (!valid.includes(name)) name = 'home';
+            document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.id === 'tab-' + name));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        window.addEventListener('hashchange', () => openTab(location.hash.replace('#', '')));
+
+        /* ---------- matrix ---------- */
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
+        const fontSize = 10;
+        let drops = Array(Math.floor(canvas.width / fontSize)).fill(1);
         function drawMatrix() {
             ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
             ctx.fillStyle = '#ffe600';
             ctx.font = fontSize + 'px JetBrains Mono';
-
             for (let i = 0; i < drops.length; i++) {
                 const text = letters[Math.floor(Math.random() * letters.length)];
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
             }
         }
-
-        setInterval(drawMatrix, 35);
-
-        setTimeout(() => {
-            document.getElementById('errorScreen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('errorScreen').style.display = 'none';
-                document.getElementById('cvContainer').classList.add('show');
-            }, 500);
-        }, 2600);
-
-        function showSection(sectionId, btn) {
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
-
-            const sections = document.querySelectorAll('.content-section');
-            sections.forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            document.getElementById(sectionId).classList.add('active');
-            
-            const terminals = document.querySelectorAll(`#${sectionId} .terminal-content p`);
-            terminals.forEach((p, index) => {
-                p.style.opacity = '0';
-                setTimeout(() => {
-                    p.style.opacity = '1';
-                    p.style.animation = 'typewriter 0.5s steps(50) forwards';
-                }, index * 200);
-            });
-        }
-
-        function animateCard(card) {
-            card.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                card.style.transform = 'scale(1.05)';
-                setTimeout(() => {
-                    card.style.transform = 'scale(1)';
-                }, 150);
-            }, 100);
-            
-            createParticles(card);
-        }
-
-        function createParticles(element) {
-            const rect = element.getBoundingClientRect();
-            for (let i = 0; i < 6; i++) {
-                const particle = document.createElement('div');
-                particle.style.position = 'fixed';
-                particle.style.left = rect.left + rect.width/2 + 'px';
-                particle.style.top = rect.top + rect.height/2 + 'px';
-                particle.style.width = '4px';
-                particle.style.height = '4px';
-                particle.style.background = '#ffe600';
-                particle.style.borderRadius = '50%';
-                particle.style.pointerEvents = 'none';
-                particle.style.zIndex = '9999';
-                
-                document.body.appendChild(particle);
-                
-                const angle = (i * 60) * Math.PI / 180;
-                const distance = 100;
-                const endX = rect.left + rect.width/2 + Math.cos(angle) * distance;
-                const endY = rect.top + rect.height/2 + Math.sin(angle) * distance;
-                
-                particle.animate([
-                    { transform: 'translate(0, 0)', opacity: 1 },
-                    { transform: `translate(${endX - rect.left - rect.width/2}px, ${endY - rect.top - rect.height/2}px)`, opacity: 0 }
-                ], {
-                    duration: 800,
-                    easing: 'ease-out'
-                }).onfinish = () => particle.remove();
-            }
-        }
-
-        let konamiCode = [];
-        const konamiSequence = [
-            'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
-            'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
-            'KeyB', 'KeyA'
-        ];
-
-        document.addEventListener('keydown', (e) => {
-            konamiCode.push(e.code);
-            
-            if (konamiCode.length > konamiSequence.length) {
-                konamiCode.shift();
-            }
-            
-            if (konamiCode.length === konamiSequence.length) {
-                let match = true;
-                for (let i = 0; i < konamiSequence.length; i++) {
-                    if (konamiCode[i] !== konamiSequence[i]) {
-                        match = false;
-                        break;
-                    }
-                }
-                
-                if (match) {
-                    activateKonamiMode();
-                    konamiCode = [];
-                }
-            }
-        });
-
-        function activateKonamiMode() {
-            const style = document.createElement('style');
-            style.innerHTML = `
-                @keyframes rainbow {
-                    0% { filter: hue-rotate(0deg); }
-                    100% { filter: hue-rotate(360deg); }
-                }
-                body { animation: rainbow 3s linear infinite; }
-            `;
-            document.head.appendChild(style);
-            
-            const konamiPopup = document.createElement('div');
-            konamiPopup.style.position = 'fixed';
-            konamiPopup.style.top = '50%';
-            konamiPopup.style.left = '50%';
-            konamiPopup.style.transform = 'translate(-50%, -50%)';
-            konamiPopup.style.background = 'linear-gradient(45deg, #ffe600, #ffb800, #ffe600)';
-            konamiPopup.style.color = '#fff';
-            konamiPopup.style.padding = '40px';
-            konamiPopup.style.borderRadius = '15px';
-            konamiPopup.style.zIndex = '10001';
-            konamiPopup.style.textAlign = 'center';
-            konamiPopup.style.fontFamily = 'JetBrains Mono';
-            konamiPopup.style.fontSize = '1.5rem';
-            konamiPopup.style.fontWeight = 'bold';
-            konamiPopup.style.boxShadow = '0 0 100px rgba(255, 255, 255, 0.8)';
-            konamiPopup.innerHTML = `
-                <div style="margin-bottom: 20px;">🎉 KONAMI CODE ACTIVATED! 🎉</div>
-                <div style="font-size: 1rem; margin-bottom: 30px;">
-                    You've unlocked RAINBOW DEVELOPER MODE!<br>
-                    Clearly you have excellent attention to detail! 🌈
-                </div>
-                <button onclick="location.reload()" 
-                        style="background: #fff; color: #000; border: none; padding: 15px 30px; 
-                               border-radius: 8px; cursor: pointer; font-family: inherit; font-weight: bold;">
-                    RESET MATRIX
-                </button>
-            `;
-            
-            document.body.appendChild(konamiPopup);
-        }
-
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeInUp 0.6s ease forwards';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.project-card, .stat-card, .skill-category').forEach(el => {
-            observer.observe(el);
-        });
-
-
+        setInterval(drawMatrix, 40);
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+            drops = Array(Math.floor(canvas.width / fontSize)).fill(1);
         });
 
+        /* ---------- boot + init ---------- */
+        function init() {
+            let saved = 'en';
+            try { saved = localStorage.getItem('hub_lang') || 'en'; } catch (e) {}
+            setLang(saved);
+            openTab(location.hash.replace('#', '') || 'home');
+            setTimeout(() => {
+                document.getElementById('boot').classList.add('hide');
+                document.getElementById('app').classList.add('show');
+            }, 2600);
+        }
+        init();
+
+        /* ---------- konami (hidden easter egg) ---------- */
+        let konamiCode = [];
+        const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.code);
+            if (konamiCode.length > konamiSequence.length) konamiCode.shift();
+            if (konamiCode.join() === konamiSequence.join()) {
+                document.body.style.animation = 'gradientShift 2s linear';
+                const s = document.createElement('style');
+                s.textContent = '@keyframes hue { to { filter: hue-rotate(360deg); } } body { animation: hue 3s linear infinite; }';
+                document.head.appendChild(s);
+                konamiCode = [];
+            }
+        });
 
         window.addEventListener('load', () => {
             setTimeout(() => {
-                console.log(`
-    ╔══════════════════════════════════════╗
-    ║   Yehor Obraztsov — Full-Stack .NET  ║
-    ║   Like what you see? Let's talk.     ║
-    ║   yehor.obraztsov@gmail.com          ║
-    ║   Konami code still works ;)         ║
-    ╚══════════════════════════════════════╝
-                `);
-            }, 5000);
+                console.log('%c>_ yehor://hub — like what you see? yehor.obraztsov@gmail.com', 'color:#ffe600');
+            }, 2000);
         });
     </script>
 </body>
